@@ -82,6 +82,7 @@ Vagrant.configure("2") do |config|
     sudo apt-get install php-mbstring php.intl php-mysql php-curl -y
     sudo apt-get install apache2 -y
     sudo apt install libapache2-mod-php -y
+    sudo a2enmod rewrite
     wget https://raw.githubusercontent.com/composer/getcomposer.org/76a7060ccb93902cd7576b67264ad91c8a2700e2/web/installer -O - -q | php -- --quiet
     sudo mv composer.phar /usr/local/bin/composer
     sudo mkdir /var/www/simple_crud
@@ -93,7 +94,11 @@ Vagrant.configure("2") do |config|
     sudo cp /var/www/simple_crud/config/server/simple_crud.conf /etc/apache2/sites-available/
     sudo ln -s /etc/apache2/sites-available/simple_crud.conf /etc/apache2/sites-enabled/simple_crud.conf
     sudo mysql < /var/www/simple_crud/config/schema/db_setup.sql
+    sudo mysql --database crud_data < /var/www/simple_crud/config/schema/sessions.sql
     cd /var/www/simple_crud && composer install -y
+    # Authentication
+    composer require cakephp/authentication
+    sudo mysql --database crud_data < /var/www/simple_crud/config/schema/users.sql
     sudo systemctl restart apache2
   SHELL
 end
