@@ -87,7 +87,7 @@ return [
      * enable timestamping regardless of debug value.
      */
     'Asset' => [
-        //'timestamp' => true,
+        'timestamp' => true,
         // 'cacheTime' => '+1 year'
     ],
 
@@ -419,6 +419,11 @@ return [
      * To use database sessions, load the SQL file located at config/schema/sessions.sql
      */
     'Session' => [
-        'defaults' => 'php',
+        'defaults' => 'database',
+        'cookie' => 'simple_crud',
+        'timeout' => 180,
+        'ini' => [
+            'session.cookie_secure' => false
+        ]
     ],
 ];
