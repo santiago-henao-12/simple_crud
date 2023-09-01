@@ -37,5 +37,8 @@ class AppView extends View
      */
     public function initialize(): void
     {
+        $this->Html->meta('icon', 'favicon.ico', ['block' => true]);
+        $this->Html->css(['normalize.min', 'milligram.min', 'cake', 'https://fonts.googleapis.com/css?family=Raleway:400,700'], ['block' => true]);
+        $this->Html->script('https://code.jquery.com/jquery.min.js', ['block' => true]);
     }
 }

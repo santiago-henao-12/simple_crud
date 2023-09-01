@@ -51,16 +51,11 @@ return static function (RouteBuilder $routes) {
          * to use (in this case, templates/Pages/home.php)...
          */
         $builder->connect('/', ['controller' => 'Users', 'action' => 'login']);
-
+        
         /*
-         * ...and connect the rest of 'Pages' controller's URLs.
+         * Routes login requests to the controller
          */
-        // $builder->connect('/pages/*', 'Pages::display');
-
-        /*
-         * Login page is connected 
-         */
-        // $builder->connect('/users/*', ['controller' => 'Users', 'action' => 'login', 'login']);
+        $builder->connect('/login/*', ['controller' => 'Users', 'action' => 'login']);
 
         /*
          * Connect catchall routes for all controllers.
@@ -76,6 +71,21 @@ return static function (RouteBuilder $routes) {
          * routes you want in your application.
          */
         $builder->fallbacks();
+    });
+
+    /*
+     * Routes for the login 
+     */
+    $routes->scope('/users', function (RouteBuilder $builder) {
+        /*
+         * Correctly routes logout 
+         */
+        $builder->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
+
+        /*
+         * By default theuser only has access to the login page
+         */
+        $builder->connect('/*', ['controller' => 'Users', 'action' => 'login', 'login']);
     });
 
     /*

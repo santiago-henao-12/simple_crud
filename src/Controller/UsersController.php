@@ -16,13 +16,13 @@ class UsersController extends AppController
     /**
      * Before filter method of the User Controller
      * 
-     * @param \Cake\Event\EventInterface $event Before filtering by route rules
+     * @param \Cake\Event\EventInterface $event Before controller is executed
      */
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         parent::beforeFilter($event);
 
-        $this->Authentication->allowUnauthenticated(['login', 'add', 'index', 'edit', 'delete']);
+        $this->Authentication->allowUnauthenticated(['login']);
     }
 
     /**
@@ -128,7 +128,7 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         // If the user is logged in send them away.
         if ($result->isValid()) {
-            $target = $this->Authentication->getLoginRedirect() ?? 'users/index';
+            $target = $this->Authentication->getLoginRedirect() ?? 'contacts/index';
             return $this->redirect($target);
         }
         if ($this->request->is('post')) {

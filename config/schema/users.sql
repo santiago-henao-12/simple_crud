@@ -7,3 +7,5 @@ CREATE TABLE `users` (
     `created` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `modified` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+INSERT INTO `users` (`email`, `password`) VALUES ('test@test.com', '81dc9bdb52d04dc20036dbd8313ed055');

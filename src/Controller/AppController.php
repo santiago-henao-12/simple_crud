@@ -50,6 +50,18 @@ class AppController extends Controller
          * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
          */
         $this->loadComponent('FormProtection');
+    }
+
+    /**
+     * Before filter method of the App Controller
+     * 
+     * @param \Cake\Event\EventInterface $event Before controller is executed
+     * 
+     * @return \Cake\Http\Response|null|void
+     */
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
 
         // Informs all controllers about the auth state
         $auth = $this->Authentication->getResult()->isValid();

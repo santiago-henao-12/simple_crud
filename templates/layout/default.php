@@ -14,7 +14,6 @@
  * @var \App\View\AppView $this
  */
 
-$cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 <!DOCTYPE html>
 <html>
@@ -22,14 +21,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
-        <?= $cakeDescription ?>:
         <?= $this->fetch('title') ?>
     </title>
-    <?= $this->Html->meta('icon') ?>
-
-    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
-
-    <?= $this->Html->css(['normalize.min', 'milligram.min', 'cake']) ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -40,11 +33,11 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <div class="top-nav-title">
             <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
         </div>
-        <?php if ($auth): ?>
-            <div class="top-nav-links">
+        <div class="top-nav-links">
+            <?php if ($auth): ?>
                 <a href="<?= $this->Url->build('/users/logout') ?>">LogOut</a>
-            </div>
-        <?php endif; ?>
+            <?php endif; ?>
+        </div>
     </nav>
     <main class="main">
         <div class="container">
