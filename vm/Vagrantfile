@@ -99,6 +99,8 @@ Vagrant.configure("2") do |config|
     # Authentication
     composer require cakephp/authentication
     sudo mysql --database crud_data < /var/www/simple_crud/config/schema/users.sql
+    # Contacts Info
+    sudo mysql --database crud_data < /var/www/simple_crud/config/schema/contacts.sql
     sudo systemctl restart apache2
   SHELL
 end
