@@ -7,21 +7,23 @@
 /*
  * Script and CSS for Datatables 
  */
-$this->Html->script('https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js', ['block' => true]);
 $this->Html->css('https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css', ['block' => true]);
+$this->Html->css('contacts', ['block' => true]);
+$this->Html->script('https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js', ['block' => true]);
+$this->Html->script('contactsIndex', ['block' => true]);
 ?>
 <div class="contacts index content">
     <?= $this->Html->link(__('New Contact'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Contacts') ?></h3>
     <div class="table-responsive">
-        <table>
+        <table id="contacts-table">
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('email') ?></th>
-                    <th><?= $this->Paginator->sort('age') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
+                    <th><?= ucfirst(h('id')) ?></th>
+                    <th><?= ucfirst(h('name')) ?></th>
+                    <th><?= ucfirst(h('email')) ?></th>
+                    <th><?= ucfirst(h('age')) ?></th>
+                    <th><?= ucfirst(h('modified')) ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -34,23 +36,13 @@ $this->Html->css('https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css', 
                     <td><?= $this->Number->format($contact->age) ?></td>
                     <td><?= h($contact->modified) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $contact->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $contact->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contact->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contact->id)]) ?>
+                        <?= $this->Html->link(__('View'), ['action' => 'view', $contact->id], ['class' => 'button-action']) ?>
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $contact->id], ['class' => 'button-action']) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contact->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contact->id), 'class' => 'button-action']) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-    </div>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
     </div>
 </div>
