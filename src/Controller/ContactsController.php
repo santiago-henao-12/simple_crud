@@ -114,4 +114,25 @@ class ContactsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    /**
+     * Export xlsx method, to download the data as a spreadsheet
+     * 
+     * @return \Cake\Http\Response|null|void Downloads the xlsx
+     */
+    public function excel()
+    {
+        $this->viewBuilder()->disableAutoLayout();
+        $contacts = $this->Contacts->find()
+            ->disableHydration()
+            ->toArray();
+
+        $this->set(compact('contacts'));
+
+        // The view is returned as a file to download
+        $filename = 'contacts_'.date('ymd_His');
+        $this->response = $this->response->withDownload("{$filename}.xlsx");
+
+        $this->viewBuilder()->setOption('serialize', ['contacts']);
+    }
 }

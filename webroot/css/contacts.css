@@ -51,6 +51,10 @@
   grid-column: 1 / span 2;
 }
 
+.button.float-right {
+	margin-left: 0.45rem;
+}
+
 /* Search */
 #contacts-table_filter  input {
   margin: 0;
