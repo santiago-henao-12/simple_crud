@@ -88,32 +88,35 @@ Vagrant.configure("2") do |config|
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
+    # Install packages
     sudo apt-get update -y
     sudo apt-get install unzip -y
     sudo apt-get upgrade openssl -y
     sudo apt install mysql-server -y
     sudo apt-get install php7.4-cli php7.4-dev php-pear -fy
-    sudo apt-get install php-mbstring php.intl php-mysql php-curl -y
+    sudo apt-get install php-mbstring php.intl php-mysql php-curl php-gd php-zip -y
     sudo apt-get install apache2 -y
     sudo apt install libapache2-mod-php -y
     sudo a2enmod rewrite
+    # Composer instalation
     wget https://raw.githubusercontent.com/composer/getcomposer.org/76a7060ccb93902cd7576b67264ad91c8a2700e2/web/installer -O - -q | php -- --quiet
     sudo mv composer.phar /usr/local/bin/composer
+    # Project setup
     sudo mkdir /var/www/simple_crud
     sudo cp -r /sync/* /var/www/simple_crud
     sudo chown -R vagrant: /var/www/simple_crud
+    # Web server configuration
     sudo rm /etc/apache2/sites-available/000-default.conf
     sudo rm /etc/apache2/sites-enabled/000-default.conf
     sudo cp /var/www/simple_crud/config/server/simple_crud.conf /etc/apache2/sites-available/
     sudo ln -s /etc/apache2/sites-available/simple_crud.conf /etc/apache2/sites-enabled/simple_crud.conf
+    # Database schema
     sudo mysql < /var/www/simple_crud/config/schema/db_setup.sql
     sudo mysql --database crud_data < /var/www/simple_crud/config/schema/sessions.sql
-    cd /var/www/simple_crud && composer install -y
-    # Authentication
-    composer require cakephp/authentication
     sudo mysql --database crud_data < /var/www/simple_crud/config/schema/users.sql
-    # Contacts Info
     sudo mysql --database crud_data < /var/www/simple_crud/config/schema/contacts.sql
+    # Install dependencies
+    cd /var/www/simple_crud && composer install -y
     sudo systemctl restart apache2
   SHELL
 end
