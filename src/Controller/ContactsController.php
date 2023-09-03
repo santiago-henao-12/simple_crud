@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\View\XlsView;
+use App\View\CsvView;
+use App\View\TextView;
+use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotAcceptableException;
 use Cake\View\JsonView;
 
 /**
@@ -14,12 +19,23 @@ use Cake\View\JsonView;
 class ContactsController extends AppController
 {
     /**
-     * ViewClasses for this controller, adding JsonView allows
-     * to give JsonResponses
+     * Accepted fromats for exports
+     * 
+     * @var array
+     */
+    protected $_acceptedFormats = [
+        'text/plain' => 'txt',
+        'text/csv' => 'csv',
+        'application/vnd.ms-excel' => 'xls',
+        '*/*' => 'xls'
+    ];
+
+    /**
+     * ViewClasses for this controller
      */
     public function viewClasses(): array
     {
-        return [JsonView::class];
+        return [JsonView::class, XlsView::class, CsvView::class, TextView::class];
     }
 
     /**
@@ -116,23 +132,69 @@ class ContactsController extends AppController
     }
 
     /**
-     * Export xlsx method, to download the data as a spreadsheet
+     * Export method, to download the data as a spreadsheet in various formats
      * 
-     * @return \Cake\Http\Response|null|void Downloads the xlsx
+     * @return \Cake\Http\Response|null|void Downloads the file
      */
-    public function excel()
+    public function export()
     {
-        $this->viewBuilder()->disableAutoLayout();
-        $contacts = $this->Contacts->find()
-            ->disableHydration()
-            ->toArray();
+        $this->request->allowMethod(['get', 'post']);
 
-        $this->set(compact('contacts'));
+        $contacts = $this->Contacts->find()->all()->toArray();
 
-        // The view is returned as a file to download
-        $filename = 'contacts_'.date('ymd_His');
-        $this->response = $this->response->withDownload("{$filename}.xlsx");
+        // By default will send plain text response
+        $clientFormats = array_intersect($this->request->accepts(), array_keys($this->_acceptedFormats));
+        if (!empty($clientFormats)) {
+            $this->viewBuilder()->disableAutoLayout();
+            if (current($clientFormats) == '*/*') {
+                $this->viewBuilder()->setClassName(TextView::class);
+            }
+            $format = $this->_acceptedFormats[current($clientFormats)];
 
-        $this->viewBuilder()->setOption('serialize', ['contacts']);
+            // Sets up the headers
+            $fields = array_keys($contacts[0]->toArray());
+
+            $this->set(compact('contacts'));
+
+            
+            // The view is returned as a file to download
+            $dateString = date('y-m-d_H:i:s');
+            $filename = "Contacts_{$dateString}.{$format}";
+            $this->response = $this->response->withDownload($filename);
+            
+            $this->viewBuilder()->setOptions([
+                'serialize' => 'contacts',
+                'header' => $fields
+            ]);
+        } else {
+            // In case no suitable format is found
+            throw new NotAcceptableException(__('Formats specified are not supported'));
+        }
+    }
+
+    /**
+     * Called after the controller action is run, but before the view is rendered. You can use this method
+     * to perform logic or set view variables that are required on every request.
+     *
+     * @param \Cake\Event\EventInterface $event An Event instance
+     * @return \Cake\Http\Response|null|void
+     * @link https://book.cakephp.org/4/en/controllers.html#request-life-cycle-callbacks
+     */
+    public function beforeRender(EventInterface $event)
+    {
+        parent::beforeRender($event);
+
+        $builder = $this->viewBuilder();
+
+        // Resets the viewClass for export requests
+        if ($this->request->getParam('action') == 'export' && $this->request->is('ajax')) {
+            // Overrides a behaviour of the RequestHandlerComponent
+            $builder->setClassName(null);
+
+            if ($builder->getTemplate() === null) {
+                $builder->setTemplate($this->request->getParam('action'));
+            }
+        }
+        
     }
 }

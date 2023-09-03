@@ -7,15 +7,18 @@
 /*
  * Script and CSS for Datatables 
  */
-$this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken'), ['block' => true]);
 $this->Html->css('https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css', ['block' => true]);
 $this->Html->css('contacts', ['block' => true]);
 $this->Html->script('https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js', ['block' => true]);
 $this->Html->script('contactsIndex', ['block' => true]);
 ?>
 <div class="contacts index content">
-    <?= $this->Html->link(__('New Contact'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <?= $this->Html->link(__('Export XLSX'), ['action' => 'excel'], ['class' => 'button float-right']) ?>
+    <div class="contacts-button-wrapper">
+        <?= $this->Html->link(__('New Contact'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+        <?= $this->Html->link(__('Download'), ['action' => 'export'], ['class' => 'button float-right']) ?>
+        <button class="button float-right" data-format="application/vnd.ms-excel"><?= __('Export XLS') ?></button>
+        <button class="button float-right" data-format="text/csv"><?= __('Export CSV') ?></button>
+    </div>
     <h3><?= __('Contacts') ?></h3>
     <div class="table-responsive">
         <table id="contacts-table">
