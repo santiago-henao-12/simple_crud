@@ -50,12 +50,17 @@ return static function (RouteBuilder $routes) {
          * its action called 'display', and we pass a param to select the view file
          * to use (in this case, templates/Pages/home.php)...
          */
-        $builder->connect('/', ['controller' => 'Users', 'action' => 'login']);
+        $builder->connect('/', 
+            ['controller' => 'Users', 'action' => 'login']
+        );
         
         /*
          * Routes login requests to the controller
          */
-        $builder->connect('/login/*', ['controller' => 'Users', 'action' => 'login']);
+        $builder->connect('/login', 
+            ['controller' => 'Users', 'action' => 'login', 'login'],
+            ['_name' => 'login']
+        );
 
         /*
          * Connect catchall routes for all controllers.
@@ -76,16 +81,28 @@ return static function (RouteBuilder $routes) {
     /*
      * Routes for the login 
      */
-    $routes->scope('/users', function (RouteBuilder $builder) {
+    $routes->scope('/users', ['controller' => 'Users'] , function (RouteBuilder $builder) {
         /*
          * Correctly routes logout 
          */
-        $builder->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
+        $builder->connect('/logout', ['action' => 'logout']);
 
         /*
-         * By default theuser only has access to the login page
+         * By default the user only has access to the login page
          */
-        $builder->connect('/*', ['controller' => 'Users', 'action' => 'login', 'login']);
+        $builder->connect('/*', ['action' => 'login', 'login']);
+    });
+
+    /**
+     * Routes for contacts
+     */
+    $routes->scope('/contacts', ['controller' => 'Contacts'],function (RouteBuilder $builder) {
+        /**
+         * Correctly connects the views, an authenticated user should be able to acces the whole CRUD
+         */
+        $builder->connect('/{action}', []);
+
+
     });
 
     /*

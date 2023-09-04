@@ -27,7 +27,7 @@ class ContactsController extends AppController
         'text/plain' => 'txt',
         'text/csv' => 'csv',
         'application/vnd.ms-excel' => 'xls',
-        '*/*' => 'xls'
+        '*/*' => 'txt'
     ];
 
     /**
@@ -45,9 +45,14 @@ class ContactsController extends AppController
      */
     public function index()
     {
+        // Fetchs the Contact info
         $contacts = $this->paginate($this->Contacts);
 
-        $this->set(compact('contacts'));
+        // Export Buttons
+        $exportButtons = $this->_acceptedFormats;
+        array_pop($exportButtons);
+
+        $this->set(compact('contacts', 'exportButtons'));
         $this->viewBuilder()->setOption('serialize', ['contacts']);
     }
 

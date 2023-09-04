@@ -155,12 +155,17 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         $service->loadAuthenticator('Authentication.Session');
         $service->loadAuthenticator('Authentication.Form', [
             'fields' => $fields,
-            'loginUrl' => Router::url([
-                'prefix' => false,
-                'plugin' => null,
-                'controller' => 'Users',
-                'action' => 'login',
-            ]),
+            'loginUrl' => [
+                Router::url([
+                    'prefix' => null,
+                    'plugin' => null,
+                    'controller' => 'Users',
+                    'action' => 'login',
+                ]),
+                Router::url('/login'),
+                Router::url('/users/'),
+                Router::url('/users/*')
+            ]
         ]);
 
         // Load identifiers
