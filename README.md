@@ -1,53 +1,16 @@
-# CakePHP Application Skeleton
+## Simple Crud
+This is a simple crud application built with Cake PHP v4.4 and meant to be run mainly in Ubuntu Focal Fossa environment. The repo comes with a Vagrant File that allows building a Virtual Machine, with Vagrant v2.3.7> and VirtualBox as vm provider, that serves the application in port 8080 of the localhost. To do this, one must navigate to the folder `vm` and run `vagrant up`. After this, the application should be served at port 8080 and the vm can be shutdown running `vagrant halt` in the `vm` folder.
 
-![Build Status](https://github.com/cakephp/app/actions/workflows/ci.yml/badge.svg?branch=master)
-[![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
-[![PHPStan](https://img.shields.io/badge/PHPStan-level%207-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
+## Set Up
+To run the application in a dedicated server, the following conditions should be met. Install PHP with the following extensions: php7.4-cli php7.4-dev php-pear, php-mbstring php.intl php-mysql php-curl php-gd php-zip, preferably using trusted repositories and reliable command line tools such as apt, if running on Windows equivalent extensions should be enabled. Checking either the pertinent php.ini file or the mechanism the current system has to enable PHP extensions is essential to ensure correct functioning.
 
-A skeleton for creating applications with [CakePHP](https://cakephp.org) 4.x.
+Some of these PHP extensions require other software such as an installation of OpenSSL, unzip and MySQL server which will be used as the main database engine, in the folder config\schema of the project there are SQL scripts meant to set up the database for the application.
 
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
+## Web Server
+Once the requirements are installed, one should proceed to install the apache2 server and the pertinent mod that lets Apache communicate with PHP and forward requests. It’s important to enable the Apache mod that lets rewrite requests, so Apache can properly route the request to the entry point of PHP in the webroot folder of the project. The repo includes a config file for Apache, the DocumentRoot should be checked and changed to the appropriate path and should be placed in the sites-available folder of the Apache installation, if there is any other file serving in the same port it should be removed or the port of either file should be changed.
 
-## Installation
+## Composer setup
+After setting up the web server, the final step would be to install the dependencies of the project, since the project is managed by composer one should install said tool, the vagrant file has a command that lets us download an auto setup script to install composer, the executable of composer could be copied to either a folder that lets execute it globally or add it at the path environment variable in Windows systems, composer also has an installer available for such systems. Once composer is installed, navigate to the root folder of the project and execute `composer install` to download Cake PHP and all the required dependencies, it is necessary too to restart the Apache server.
 
-1. Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
-
-If Composer is installed globally, run
-
-```bash
-composer create-project --prefer-dist cakephp/app
-```
-
-In case you want to use a custom app dir name (e.g. `/myapp/`):
-
-```bash
-composer create-project --prefer-dist cakephp/app myapp
-```
-
-You can now either use your machine's webserver to view the default home page, or start
-up the built-in webserver with:
-
-```bash
-bin/cake server -p 8765
-```
-
-Then visit `http://localhost:8765` to see the welcome page.
-
-## Update
-
-Since this skeleton is a starting point for your application and various files
-would have been modified as per your needs, there isn't a way to provide
-automated upgrades, so you have to do any updates manually.
-
-## Configuration
-
-Read and edit the environment specific `config/app_local.php` and setup the 
-`'Datasources'` and any other configuration relevant for your application.
-Other environment agnostic settings can be changed in `config/app.php`.
-
-## Layout
-
-The app skeleton uses [Milligram](https://milligram.io/) (v1.3) minimalist CSS
-framework by default. You can, however, replace it with any other library or
-custom styles.
+## Test the App
+Now all that’s left is to test the app, the app is mostly built on top of the app scaffold made by bake, a Cake PHP CLI tool that creates basic components for each “Model” aka table that is relevant for the app. In this app, the 2 relevant tables are Users and Contacts, although as of now the user has little to no access to the Users table, for simplicity’s sake the built-in CRUD for the Users is not accessible and the user only ever interacts with that information when it is logging in. The other table is the one the CRUD interacts with, Contacts, it has 5 fields one of which is a pseudo random string of 41 alphanumeric characters, the rest are normal contact info. The login system is mostly composed of a login view powered by the Users' table which stores the user credentials, functional ones will be given to test the app, and the Authentication component service of Cake PHP ensures the user either needs to log in or is already authenticated. After logging into the app the user will be presented with a simple table made with the Data Table library, the one can check the information for the stored contacts and edit/delete/add new contacts. Finally, the contact data stored can be exported in 3 different formats, .txt, .csv and .xsl, the contact info is parsed by the server and sent to the browser for its download. That is the basic functioning of the project.
