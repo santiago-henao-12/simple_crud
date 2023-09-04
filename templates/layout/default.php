@@ -13,7 +13,6 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
  */
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,7 +34,7 @@
         </div>
         <div class="top-nav-links">
             <?php if ($auth): ?>
-                <a href="<?= $this->Url->build('/users/logout') ?>">LogOut</a>
+                <?= $this->Html->link(__('LogOut'), ['action' => 'logout', 'controller' => 'users'], ['class' => "button {$buttonClasses}"]) ?>
             <?php endif; ?>
         </div>
     </nav>

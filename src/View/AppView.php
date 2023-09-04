@@ -37,8 +37,27 @@ class AppView extends View
      */
     public function initialize(): void
     {
+        // Loads elements
         $this->Html->meta('icon', 'favicon.ico', ['block' => true]);
-        $this->Html->css(['normalize.min', 'milligram.min', 'cake', 'https://fonts.googleapis.com/css?family=Raleway:400,700'], ['block' => true]);
-        $this->Html->script('https://code.jquery.com/jquery.min.js', ['block' => true]);
+        $this->Html->css([
+            'normalize.min',
+            'milligram.min',
+            'cake',
+            'jquery-ui.min.css',
+            'jquery-ui.structure.css',
+            'jquery-ui.theme.css',
+            'common.css',
+            'mixins.css',
+            'https://fonts.googleapis.com/css?family=Raleway:400,700',
+        ], ['block' => true]);
+        $this->Html->script([
+            'jquery-3.7.0.min.js',
+            'jquery-ui.min.js',
+        ], ['block' => true]);
+
+        // Sets some variables
+        $buttonClasses = "ui-button ui-widget ui-corner-all";
+
+        $this->set(compact('buttonClasses'));
     }
 }
