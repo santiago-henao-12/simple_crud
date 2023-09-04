@@ -4,10 +4,11 @@
 
 // Callback for ajax requets
 function ajaxHandler(event) {
-	event.stopImmediatePropagation();
-	// Reference to progress bar
-	const progressBar = $('#export-progress');
-	progressBar.fadeIn('slow');
+	// Searchs for the spinner
+	const spinner = $('.spinner');
+	const loadingMask = $('.loading-mask')
+	spinner.show();
+	loadingMask.show();
 	fetch('export', {
 		method: 'GET',
 		headers: {
@@ -19,8 +20,8 @@ function ajaxHandler(event) {
 			this.fileName = /filename=\"(.+)\"/.exec(response.headers.get('Content-Disposition'))[1];
 			return response.arrayBuffer();
 		} else {
-			progressBar.fadeOut('slow');
-			progressBar.val(0);
+			spinner.hide();
+			loadingMask.hide();
 		}
 	}).then((data) => {
 		// Creates a blob with the data to download it
@@ -33,14 +34,12 @@ function ajaxHandler(event) {
 		link.dispatchEvent(new MouseEvent('click'));
 		window.URL.revokeObjectURL(url);
 
-		progressBar.val(100);
-		progressBar.fadeOut('slow', function () {
-			progressBar.val(0);
-		})
+		spinner.hide();
+		loadingMask.hide();
 	}).catch((error) => {
 		console.error('Error: ', error);
-		progressBar.fadeOut('slow');
-		progressBar.val(0);
+		spinner.hide();
+		loadingMask.hide();
 	})
 }
 
@@ -67,11 +66,10 @@ $(document).ready(function () {
 	// Set up of the datatable
 	$('#contacts-table').DataTable({
 		responsive: {
-			details: false
+			details: {
+				type: 'column'
+			}
 		},
-		buttons: [
-			'copy'
-		],
 		lengthMenu: [1, 2, 5, 10],
 		scrollY: 300,
 		scrollCollapse: true,
@@ -81,5 +79,5 @@ $(document).ready(function () {
 	});
 
 	// Set up for the export buttons
-	$('.contacts-button-wrapper').on('click', 'button', ajaxHandler);
+	$('.export-button-wrapper').on('click', 'button', ajaxHandler);
 });

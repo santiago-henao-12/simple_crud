@@ -49,6 +49,7 @@ class AppView extends View
             'common.css',
             'mixins.css',
             'https://fonts.googleapis.com/css?family=Raleway:400,700',
+            'spinner'
         ], ['block' => true]);
         $this->Html->script([
             'jquery-3.7.0.min.js',

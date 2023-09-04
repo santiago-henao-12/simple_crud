@@ -122,6 +122,8 @@ th {
     border-style: solid;
     border-radius: 4px;
     margin-bottom: 2rem;
+
+    transition: all ease-out 0.5s;
 }
 .message.hidden {
     display: none;

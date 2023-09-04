@@ -42,6 +42,7 @@
         <div class="container">
             <?= $this->Flash->render() ?>
             <?= $this->fetch('content') ?>
+            <?= $this->element('spinner') ?>
         </div>
     </main>
     <footer>

@@ -22,7 +22,10 @@
                     echo $this->Form->control('age');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'),
+            [
+                'class' => $buttonClasses
+            ]) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>
