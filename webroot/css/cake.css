@@ -19,6 +19,8 @@ a {
     color:#2f85ae;
     -webkit-transition:all 0.2s linear;
     transition:all 0.2s linear;
+    display: flex;
+    align-items: center;
 }
 
 a:hover,

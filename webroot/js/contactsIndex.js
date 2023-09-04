@@ -4,6 +4,7 @@
 
 // Callback for ajax requets
 function ajaxHandler(event) {
+	event.stopImmediatePropagation();
 	// Reference to progress bar
 	const progressBar = $('#export-progress');
 	progressBar.fadeIn('slow');
@@ -43,16 +44,16 @@ function ajaxHandler(event) {
 	})
 }
 
-// Clamps a value
+/* // Clamps a value
 function clamp(value, min, max) {
 	if (isFinite(value)) {
 		return value; // Value is finite, return it as-is
 	}
 
 	return Math.min(Math.max(value, min), max);
-}
+} */
 
-// Transform string to array buffer
+/* // Transform string to array buffer
 function str2ab(str) {
     var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
     var bufView = new Uint16Array(buf);
@@ -60,13 +61,19 @@ function str2ab(str) {
     bufView[i] = str.charCodeAt(i);
     }
     return buf;
-}
+} */
 
 $(document).ready(function () {
 	// Set up of the datatable
 	$('#contacts-table').DataTable({
+		responsive: {
+			details: false
+		},
+		buttons: [
+			'copy'
+		],
 		lengthMenu: [1, 2, 5, 10],
-		scrollY: 200,
+		scrollY: 300,
 		scrollCollapse: true,
 		columnDefs: [
 			{orderable: false , targets: 5}
