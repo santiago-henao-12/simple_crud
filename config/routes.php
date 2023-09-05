@@ -23,6 +23,7 @@
 
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
+use Cake\Routing\Router;
 
 return static function (RouteBuilder $routes) {
     /*
@@ -51,16 +52,14 @@ return static function (RouteBuilder $routes) {
          * to use (in this case, templates/Pages/home.php)...
          */
         $builder->connect('/', 
-            ['controller' => 'Users', 'action' => 'login']
+            ['controller' => 'Users', 'action' => 'login'],
+            ['_name' => 'login']
         );
         
         /*
          * Routes login requests to the controller
          */
-        $builder->connect('/login', 
-            ['controller' => 'Users', 'action' => 'login', 'login'],
-            ['_name' => 'login']
-        );
+        $builder->redirect('/login', Router::url(['_name' => 'login']));
 
         /*
          * Connect catchall routes for all controllers.
@@ -87,16 +86,21 @@ return static function (RouteBuilder $routes) {
          */
         $builder->connect('/logout', ['action' => 'logout']);
 
+        /**
+         * Adds access to register page
+         */
+        $builder->connect('/add', ['action' => 'add']);
+
         /*
          * By default the user only has access to the login page
          */
-        $builder->connect('/*', ['action' => 'login', 'login']);
+        $builder->redirect('/*', Router::url(['_name' => 'login']));
     });
 
     /**
      * Routes for contacts
      */
-    $routes->scope('/contacts', ['controller' => 'Contacts'],function (RouteBuilder $builder) {
+    $routes->scope('/contacts', ['controller' => 'Contacts'], function (RouteBuilder $builder) {
         /**
          * Correctly connects the views, an authenticated user should be able to acces the whole CRUD
          */

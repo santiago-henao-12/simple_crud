@@ -22,7 +22,7 @@ $this->Html->script([
     'responsive.jqueryui.min.js'
 ], ['block' => true]);
 ?>
-<div class="contacts index content">
+<div class="contacts index content ui-widget-header">
     <div class="export-button-container">
         <h3 class="table-header"><?= __('Contacts') ?></h3>
         <div class="export-button-wrapper">
@@ -32,7 +32,7 @@ $this->Html->script([
             <?php endforeach; ?>
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive ui-widget-content ui-corner-all">
         <table id="contacts-table" class="display nowrap compact">
             <thead>
                 <tr>
@@ -47,7 +47,7 @@ $this->Html->script([
             <tbody>
                 <?php foreach ($contacts as $contact): ?>
                 <tr>
-                    <td><?= h($contact->id) ?></td>
+                    <td class="dtr-control"><?= h($contact->id) ?></td>
                     <td><?= h($contact->name) ?></td>
                     <td><?= h($contact->email) ?></td>
                     <td><?= $this->Number->format($contact->age) ?></td>
