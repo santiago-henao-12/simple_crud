@@ -12,16 +12,14 @@ $this->Html->css([
     'select.jqueryui.min.css',
     'datatables.min.css',
     'dataTables.jqueryui.min.css',
-    'responsive.jqueryui.min.css',
-    // 'buttons.jqueryui.min.css'
+    'responsive.jqueryui.min.css'
 ], ['block' => true]);
 $this->Html->script([
     'contactsIndex',
     'select.jqueryui.min.js',
     'datatables.min.js',
     'dataTables.jqueryui.min.js',
-    'responsive.jqueryui.min.js',
-    // 'buttons.jqueryui.min.js'
+    'responsive.jqueryui.min.js'
 ], ['block' => true]);
 ?>
 <div class="contacts index content">
