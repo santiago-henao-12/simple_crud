@@ -123,6 +123,7 @@ Vagrant.configure("2") do |config|
     rm /var/www/simple_crud/webroot/phpMyAdmin-5.2.1-all-languages.zip
     mv /var/www/simple_crud/webroot/phpMyAdmin-5.2.1-all-languages /var/www/simple_crud/webroot/phpMyAdmin
     cp /var/www/simple_crud/config/config.inc.php /var/www/simple_crud/webroot/phpMyAdmin
+    random_string=$(openssl rand -hex 32) && sudo sed -i "s/\$cfg\['blowfish_secret'\] = '';/\$cfg['blowfish_secret'] = '$random_string';/" /var/www/simple_crud/webroot/phpMyAdmin/config.inc.php
 
     sudo chown -R www-data: /var/www/simple_crud
 
