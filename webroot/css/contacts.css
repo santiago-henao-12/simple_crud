@@ -8,23 +8,28 @@
   border-bottom: 0.1rem solid #e1e1e1;
 }
 
-.actions .button-action:disabled {
-  cursor: default;
+.dtr-data {
+  display: inline-block;
 }
 
-.actions .button-action:hover,
-.actions .button-action:focus {
-  background-color: #606c76;
-  border-color: #606c76;
-  color: #fff;
-  outline: 0;
-  box-shadow: rgba(50, 50, 93, .1) 0 0 0 0.1rem inset, rgba(50, 50, 93, .2) 0 0.3rem 0.65rem 0, rgba(0, 0, 0, .1) 0 0.1rem 0.1rem 0, rgba(50, 151, 211, .3) 0 0 0 0.15rem;
+.dtr-data a {
+	padding: 0.35rem 1rem 0.35rem 1rem;
 }
 
-.actions .button-action:nth-child(4) {
+.dtr-data form, .actions form {
+  display: flex;
+  justify-content: center;
   grid-column: 1 / span 2;
+  padding: 0;
+  margin: 0;
 }
-
+.dtr-data form > button, .actions form > button {
+  text-transform: none;
+  height: auto;
+  line-height: 0.9;
+  margin-top: 0.45rem;
+  width: 100%;
+}
 
 /* Export Buttons */
 
