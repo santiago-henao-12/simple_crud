@@ -4,7 +4,7 @@ This is a simple crud application built with Cake PHP v4.4 and meant to be run m
 ## Set Up
 To run the application in a dedicated server, the following conditions should be met. Install PHP with the following extensions: php7.4-cli php7.4-dev php-pear, php-mbstring php.intl php-mysql php-curl php-gd php-zip, preferably using trusted repositories and reliable command line tools such as apt, if running on Windows equivalent extensions should be enabled. Checking either the pertinent php.ini file or the mechanism the current system has to enable PHP extensions is essential to ensure correct functioning.
 
-Some of these PHP extensions require other software such as an installation of OpenSSL, unzip and MySQL server which will be used as the main database engine, in the folder config\schema of the project there are SQL scripts meant to set up the database for the application.
+Some of these PHP extensions require other software such as an installation of OpenSSL, unzip and MySQL server which will be used as the main database engine, in the folder config\schema of the project there are SQL scripts (`config\schema\database.sql` and `config\schema\database.sql`) meant to set up the database for the application.
 
 ## Web Server
 Once the requirements are installed, one should proceed to install the apache2 server and the pertinent mod that lets Apache communicate with PHP and forward requests. It’s important to enable the Apache mod that lets rewrite requests, so Apache can properly route the request to the entry point of PHP in the webroot folder of the project. The repo includes a config file for Apache, the DocumentRoot should be checked and changed to the appropriate path and should be placed in the sites-available folder of the Apache installation, if there is any other file serving in the same port it should be removed or the port of either file should be changed.
@@ -14,3 +14,11 @@ After setting up the web server, the final step would be to install the dependen
 
 ## Test the App
 Now all that’s left is to test the app, the app is mostly built on top of the app scaffold made by bake, a Cake PHP CLI tool that creates basic components for each “Model” aka table that is relevant for the app. In this app, the 2 relevant tables are Users and Contacts, although as of now the user has little to no access to the Users table, for simplicity’s sake the built-in CRUD for the Users is not accessible and the user only ever interacts with that information when it is logging in. The other table is the one the CRUD interacts with, Contacts, it has 5 fields one of which is a pseudo random string of 41 alphanumeric characters, the rest are normal contact info. The login system is mostly composed of a login view powered by the Users' table which stores the user credentials, functional ones will be given to test the app, and the Authentication component service of Cake PHP ensures the user either needs to log in or is already authenticated. After logging into the app the user will be presented with a simple table made with the Data Table library, the one can check the information for the stored contacts and edit/delete/add new contacts. Finally, the contact data stored can be exported in 3 different formats, .txt, .csv and .xsl, the contact info is parsed by the server and sent to the browser for its download. That is the basic functioning of the project.
+
+## Phpadmin
+Due to this tool being preinstalled in many systems and the differences between said implementations, for the database administration it is recommended to use the system provided way to install it. a local installation is provided in the vagrant virtual machine although manual installation would only require putting the phpMyAdmin forlder in the webroot(and renaming it to exactly that) and copying the config file in `config\config.inc.php` although wether it works would depend on the settings of the Apache server.
+
+## Test credentials
+The test credentials that are installed with the SQL scripts are as following:
+test@test.com
+1234
