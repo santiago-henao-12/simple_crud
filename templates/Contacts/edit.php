@@ -24,10 +24,14 @@
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('email');
-                    echo $this->Form->control('age');
+                    echo $this->Form->control('age', [
+                        'class' => 'ui-spinner'
+                    ]);
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), [
+                'class' => $buttonClasses
+            ]) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

@@ -45,7 +45,12 @@ Vagrant.configure("2") do |config|
   # argument is a set of non-required options.
   config.vm.synced_folder "..", "/sync",
     type: "rsync",
-    rsync__exclude: [".git/", "vm/", ".vscode/"]
+    rsync__exclude: [
+      ".git/",
+      "vm/",
+      ".vscode/",
+      ".github/"
+    ]
 
 
   # Disable the default share of the current code directory. Doing this
@@ -55,6 +60,11 @@ Vagrant.configure("2") do |config|
   # shown above.
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
+  # Login settings
+  config.ssh.username = "vagrant"
+  config.ssh.password = "vagrant"
+  config.ssh.connect_timeout = 5
+
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
@@ -62,6 +72,15 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
     vb.gui = false
+    vb.cpus = 1
+
+
+    # Additinal settings to make boot faster and work on reboot
+    vb.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
+    vb.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
+    vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
   
     # Customize the amount of memory on the VM:
     vb.memory = "4096"
@@ -74,33 +93,41 @@ Vagrant.configure("2") do |config|
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
+    # Install packages
     sudo apt-get update -y
     sudo apt-get install unzip -y
     sudo apt-get upgrade openssl -y
     sudo apt install mysql-server -y
     sudo apt-get install php7.4-cli php7.4-dev php-pear -fy
-    sudo apt-get install php-mbstring php.intl php-mysql php-curl -y
+    sudo apt-get install php-mbstring php.intl php-mysql php-curl php-gd php-zip -y
     sudo apt-get install apache2 -y
     sudo apt install libapache2-mod-php -y
     sudo a2enmod rewrite
+    # Composer instalation
     wget https://raw.githubusercontent.com/composer/getcomposer.org/76a7060ccb93902cd7576b67264ad91c8a2700e2/web/installer -O - -q | php -- --quiet
     sudo mv composer.phar /usr/local/bin/composer
+    # Project setup
     sudo mkdir /var/www/simple_crud
     sudo cp -r /sync/* /var/www/simple_crud
-    sudo chown -R vagrant: /var/www/simple_crud
-    # composer create-project --prefer-dist cakephp/app:~4.0 /var/www/simple_crud
+    # Web server configuration
     sudo rm /etc/apache2/sites-available/000-default.conf
     sudo rm /etc/apache2/sites-enabled/000-default.conf
     sudo cp /var/www/simple_crud/config/server/simple_crud.conf /etc/apache2/sites-available/
     sudo ln -s /etc/apache2/sites-available/simple_crud.conf /etc/apache2/sites-enabled/simple_crud.conf
+    # Database schema
     sudo mysql < /var/www/simple_crud/config/schema/db_setup.sql
-    sudo mysql --database crud_data < /var/www/simple_crud/config/schema/sessions.sql
+    sudo mysql --database crud_data < /var/www/simple_crud/config/schema/database.sql
+    # phpMyAdmin
+    wget -P /var/www/simple_crud/webroot https://files.phpmyadmin.net/phpMyAdmin/5.2.1/phpMyAdmin-5.2.1-all-languages.zip
+    unzip /var/www/simple_crud/webroot/phpMyAdmin-5.2.1-all-languages.zip
+    rm /var/www/simple_crud/webroot/phpMyAdmin-5.2.1-all-languages.zip
+    mv /var/www/simple_crud/webroot/phpMyAdmin-5.2.1-all-languages /var/www/simple_crud/webroot/phpMyAdmin
+    cp /var/www/simple_crud/config/config.inc.php /var/www/simple_crud/webroot/phpMyAdmin
+
+    sudo chown -R www-data: /var/www/simple_crud
+
+    # Install dependencies
     cd /var/www/simple_crud && composer install -y
-    # Authentication
-    composer require cakephp/authentication
-    sudo mysql --database crud_data < /var/www/simple_crud/config/schema/users.sql
-    # Contacts Info
-    sudo mysql --database crud_data < /var/www/simple_crud/config/schema/contacts.sql
     sudo systemctl restart apache2
   SHELL
 end

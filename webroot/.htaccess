@@ -1,6 +1,7 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
+    RewriteRule ^phpmyadmin(/.*)?$ /phpMyAdmin/$1 [L]
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_URI} !^/(webroot/)?(img|css|js)/(.*)$

@@ -7,16 +7,33 @@
 /*
  * Script and CSS for Datatables 
  */
-$this->Html->css('https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css', ['block' => true]);
-$this->Html->css('contacts', ['block' => true]);
-$this->Html->script('https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js', ['block' => true]);
-$this->Html->script('contactsIndex', ['block' => true]);
+$this->Html->css([
+    'contacts',
+    'select.jqueryui.min.css',
+    'datatables.min.css',
+    'dataTables.jqueryui.min.css',
+    'responsive.jqueryui.min.css'
+], ['block' => true]);
+$this->Html->script([
+    'contactsIndex',
+    'select.jqueryui.min.js',
+    'datatables.min.js',
+    'dataTables.jqueryui.min.js',
+    'responsive.jqueryui.min.js'
+], ['block' => true]);
 ?>
 <div class="contacts index content">
-    <?= $this->Html->link(__('New Contact'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Contacts') ?></h3>
+    <div class="export-button-container">
+        <h3 class="table-header"><?= __('Contacts') ?></h3>
+        <div class="export-button-wrapper">
+            <?= $this->Html->link(__('New Contact'), ['action' => 'add'], ['class' => "button {$buttonClasses}"]) ?>
+            <?php foreach ($exportButtons as $format => $button): ?>
+                <button class="button <?= $buttonClasses ?>" data-format="<?= $format ?>"><?= __(sprintf('Export %s', $button)) ?></button>
+            <?php endforeach; ?>
+        </div>
+    </div>
     <div class="table-responsive">
-        <table id="contacts-table">
+        <table id="contacts-table" class="display nowrap compact">
             <thead>
                 <tr>
                     <th><?= ucfirst(h('id')) ?></th>
@@ -36,9 +53,10 @@ $this->Html->script('contactsIndex', ['block' => true]);
                     <td><?= $this->Number->format($contact->age) ?></td>
                     <td><?= h($contact->modified) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $contact->id], ['class' => 'button-action']) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $contact->id], ['class' => 'button-action']) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contact->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contact->id), 'class' => 'button-action']) ?>
+                        <?php foreach (['view','edit'] as $button): ?>
+                            <?= $this->Html->link(__(ucfirst($button)), ['action' => $button, $contact->id], ['class' => $buttonClasses]) ?>
+                        <?php endforeach; ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contact->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contact->id), 'class' => "button-action {$buttonClasses}"]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

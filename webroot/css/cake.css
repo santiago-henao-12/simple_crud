@@ -19,6 +19,8 @@ a {
     color:#2f85ae;
     -webkit-transition:all 0.2s linear;
     transition:all 0.2s linear;
+    display: flex;
+    align-items: center;
 }
 
 a:hover,
@@ -120,6 +122,8 @@ th {
     border-style: solid;
     border-radius: 4px;
     margin-bottom: 2rem;
+
+    transition: all ease-out 0.5s;
 }
 .message.hidden {
     display: none;
