@@ -43,7 +43,7 @@ class AppView extends View
             'normalize.min',
             'milligram.min',
             'cake',
-            'jquery-ui.min.css',
+            'default',
             'jquery-ui.structure.css',
             'jquery-ui.theme.css',
             'common.css',

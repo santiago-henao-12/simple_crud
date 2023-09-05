@@ -5,6 +5,7 @@
   grid-gap: 0.15rem;
   border: 0;
   height: 100%;
+  border-bottom: 0.1rem solid #e1e1e1;
 }
 
 .actions .button-action:disabled {
@@ -33,31 +34,27 @@
 
 .export-button-wrapper {
 	flex-wrap: wrap;
-	gap: 0.25rem;
+	gap: 1.25rem;
+  justify-content: center;
 }
 .export-button-wrapper > * {
 	width: 45%;
-	font-size: 0.95rem;
 	white-space: pre-wrap;
-}
-
-.export-button-wrapper  a.button {
-  display: flex;
-  justify-content: center;
-  align-content: center;
+  transition: font-size 0.2s ease-out;
 }
 
 .export-button-container > * {
 	width: 50%;
 }
 
-@media screen and (min-width: 476px) {
-	div.dataTables_scroll div.dataTables_scrollHead, div.dataTables_scroll div.dataTables_scrollBody {
-		width: 50%;
-	}
+div.dataTables_scroll div.dataTables_scrollHead, div.dataTables_scroll div.dataTables_scrollBody {
+  width: 50%;
+}
 
-  .export-button-wrapper  a.button {
-    line-height: 3rem;
+@media screen and (max-width: 476px) {
+  .export-button-wrapper  .button {
+    white-space: normal;
+    font-size: 1.1rem;
   }
 }
 
@@ -71,20 +68,11 @@
   overflow: hidden;
 }
 
-@media screen and (max-width: 640px) {
-  table#contacts-table {
-    display: table;
-  }
-
-  table#contacts-table tbody {
-    display: table;
-    overflow-x: visible;
-    white-space: normal;
-  }
-
-  table#contacts-table td, table#contacts-table th {
-    display: table-cell;
-  }
+h3.table-header {
+	color: #fff;
+	margin: auto;
+	padding: 2rem;
+  font-size: 4.5rem;
 }
 
 table#contacts-table {
@@ -98,4 +86,35 @@ table#contacts-table thead {
 
 .dataTables_wrapper  .dataTables_length select[name="contacts-table_length"] {
   background-color: #363535;
+}
+
+td.child ul {
+  width: 100%;
+}
+
+table#contacts-table.dataTable.dtr-column > tbody > tr > td.dtr-control::before, table.dataTable.dtr-column > tbody > tr > th.dtr-control::before, table.dataTable.dtr-column > tbody > tr > td.control::before, table.dataTable.dtr-column > tbody > tr > th.control::before {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+@media screen and (max-width: 640px) {
+  table#contacts-table {
+    display: table;
+  }
+
+  h3.table-header {
+    color: #fff;
+    padding: 0;
+    font-size: 3.5rem;
+  }
+
+  table#contacts-table tbody {
+    display: table;
+    overflow-x: visible;
+    white-space: normal;
+    width: 100%;
+  }
+
+  table#contacts-table td, table#contacts-table th {
+    display: table-cell;
+  }
 }

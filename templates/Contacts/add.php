@@ -6,13 +6,13 @@
 ?>
 <div class="row">
     <aside class="column">
-        <div class="side-nav">
+        <div class="side-nav ui-widget-header ui-corner-all">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Contacts'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('List Contacts'), ['action' => 'index'], ['class' => "side-nav-item {$buttonClasses}"]) ?>
         </div>
     </aside>
     <div class="column-responsive column-80">
-        <div class="contacts form content">
+        <div class="contacts form content ui-widget-header">
             <?= $this->Form->create($contact) ?>
             <fieldset>
                 <legend><?= __('Add Contact') ?></legend>

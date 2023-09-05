@@ -27,7 +27,7 @@
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
-<body>
+<body >
     <nav class="top-nav">
         <div class="top-nav-title">
             <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
@@ -35,6 +35,10 @@
         <div class="top-nav-links">
             <?php if ($auth): ?>
                 <?= $this->Html->link(__('LogOut'), ['action' => 'logout', 'controller' => 'users'], ['class' => "button {$buttonClasses}"]) ?>
+            <?php elseif ($showRegister) : ?>
+                <?= $this->Html->link(__('Register'), ['action' => 'add', 'controller' => 'users'], ['class' => "button {$buttonClasses}"]) ?>
+            <?php else : ?>
+                <?= $this->Html->link(__('LogIn'), ['action' => 'login', 'controller' => 'users'], ['class' => "button {$buttonClasses}"]) ?>
             <?php endif; ?>
         </div>
     </nav>

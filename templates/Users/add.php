@@ -5,14 +5,8 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column-responsive column-80">
-        <div class="users form content">
+    <div class="column-responsive">
+        <div class="users form content ui-widget-header">
             <?= $this->Form->create($user) ?>
             <fieldset>
                 <legend><?= __('Add User') ?></legend>
@@ -21,7 +15,9 @@
                     echo $this->Form->control('password');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'),[
+                'class' => $buttonClasses
+            ]) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>
