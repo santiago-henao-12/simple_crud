@@ -43,25 +43,6 @@ function ajaxHandler(event) {
 	})
 }
 
-/* // Clamps a value
-function clamp(value, min, max) {
-	if (isFinite(value)) {
-		return value; // Value is finite, return it as-is
-	}
-
-	return Math.min(Math.max(value, min), max);
-} */
-
-/* // Transform string to array buffer
-function str2ab(str) {
-    var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
-    var bufView = new Uint16Array(buf);
-    for (var i=0, strLen=str.length; i < strLen; i++) {
-    bufView[i] = str.charCodeAt(i);
-    }
-    return buf;
-} */
-
 $(document).ready(function () {
 	// Set up of the datatable
 	$('#contacts-table').DataTable({
@@ -78,6 +59,6 @@ $(document).ready(function () {
 		]
 	});
 
-	// Set up for the export buttons
+	// Handler for exports
 	$('.export-button-wrapper').on('click', 'button', ajaxHandler);
 });

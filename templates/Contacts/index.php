@@ -56,7 +56,11 @@ $this->Html->script([
                         <?php foreach (['view','edit'] as $button): ?>
                             <?= $this->Html->link(__(ucfirst($button)), ['action' => $button, $contact->id], ['class' => $buttonClasses]) ?>
                         <?php endforeach; ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contact->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contact->id), 'class' => "button-action {$buttonClasses}"]) ?>
+                        <?= $this->Form->create(null, ['url' => ['action' => 'delete', $contact->id]]) ?>
+                        <?= $this->Form->button(__('Delete'),[
+                            'class' => $buttonClasses
+                        ]) ?>
+                        <?= $this->Form->end() ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
